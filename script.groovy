@@ -64,7 +64,7 @@ job("devopstask6.3")
 {
 description ("DevOpstaask6")
 steps{
-shell('''export status=$(curl -o /dev/null -sw "%{http_code}" http://192.168.99.100:3100/index.html)
+shell('''export status=$(curl -o /dev/null -sw "%{http_code}" http://192.168.99.101:31000/index.html)
 if [ $status==200 ]
 then
 echo "Deployed"
