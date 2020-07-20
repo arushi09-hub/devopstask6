@@ -1,0 +1,46 @@
+piVersion: v1
+kind: Service
+metadata:
+  name: web
+  labels:
+    app: web-server
+spec:
+  ports:
+    - port: 4949
+      nodePort: 31000
+      targetPort: 80
+  selector:
+    app: web-server
+  type: NodePort
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: website
+  labels:
+    app: web-server
+spec:
+  selector:
+    matchLabels:
+      app: web-server
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: web-server
+    spec:
+      containers:
+      - image: httpd
+        name: web
+        ports:
+        - containerPort: 80
+          name: web-server
+        volumeMounts:
+        - name: storage
+          mountPath: /usr/local/apache2/htdocs/
+      volumes:
+      - name: storage
+        persistentVolumeClaim:
+          claimName: pvc
